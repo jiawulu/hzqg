@@ -18,11 +18,11 @@ public class SpringbootApplication {
         return new LoginInterceptor();
     }
 
-
     @Bean
     public MappedInterceptor myMappedInterceptor() {
         return new MappedInterceptor(new String[]{"/**"}, loginInterceptor());
     }
+
 
     public static void main(String[] args) {
         SpringApplication.run(SpringbootApplication.class, args);
