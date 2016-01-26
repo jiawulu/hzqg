@@ -1,5 +1,8 @@
 package com.lu.utils;
 
+import com.lu.domain.User;
+import org.springframework.util.StringUtils;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.security.MessageDigest;
@@ -43,5 +46,26 @@ public class Utils {
         }
         return null;
     }
+
+    public static User getUser(HttpServletRequest request) {
+        Object obj = request.getAttribute("user");
+        if (null != obj && obj instanceof User) {
+            return (User) obj;
+        }
+        return null;
+    }
+
+    public static int getIntParam(HttpServletRequest request, String key, int defaultValue) {
+        String value = request.getParameter(key);
+        if (StringUtils.isEmpty(value)) {
+            return defaultValue;
+        }
+        try {
+            return Integer.valueOf(value);
+        } catch (Throwable e) {
+            return defaultValue;
+        }
+    }
+
 
 }
