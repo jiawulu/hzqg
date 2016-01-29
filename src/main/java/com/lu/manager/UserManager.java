@@ -2,6 +2,7 @@ package com.lu.manager;
 
 import com.lu.dao.UserRepository;
 import com.lu.domain.User;
+import com.lu.utils.Constants;
 import com.lu.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,13 +20,14 @@ public class UserManager {
     @Autowired
     private UserRepository userRepository;
 
+    @Deprecated
     public User register(String userName, String passWord) {
 
         User user = new User();
         user.setUserName(userName);
         user.setPassWord(Utils.md5(passWord));
         user.setLastLoginTime(System.currentTimeMillis());
-        user.setRole(1);
+        user.setRole(Constants.ROLE_ADMIN);
         try {
             return userRepository.save(user);
         } catch (Throwable e) {
@@ -51,6 +53,25 @@ public class UserManager {
 
     public User getUserBySid(String sid) {
         return userRepository.getUserBySid(sid);
+    }
+
+    public User assign(User currentUser, String userName, String passWord) {
+
+        if (null == currentUser || currentUser.getRole() != Constants.ROLE_ADMIN) {
+            throw new RuntimeException("you have no admin permission");
+        }
+
+        User user = new User();
+        user.setUserName(userName);
+        user.setPassWord(Utils.md5(passWord));
+        user.setLastLoginTime(System.currentTimeMillis());
+        user.setRole(Constants.ROLE_USER);
+        try {
+            return userRepository.save(user);
+        } catch (Throwable e) {
+            LOGGER.error("register", e);
+            return null;
+        }
     }
 
 

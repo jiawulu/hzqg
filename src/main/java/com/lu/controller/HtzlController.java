@@ -13,9 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -72,6 +71,32 @@ public class HtzlController {
         result.setData(pageValue);
         return JSON.toJSONString(result);
 
+    }
+
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String handleFileUpload(@RequestParam("file") MultipartFile file) {
+
+//        if (!file.isEmpty()) {
+//            try {
+//
+//                byte[] bytes = file.getBytes();
+//
+//                new ByteArrayInputStream(bytes)
+//
+//                BufferedOutputStream stream =
+//                        new BufferedOutputStream(new FileOutputStream(new File(name)));
+//                stream.write(bytes);
+//                stream.close();
+//                return "You successfully uploaded " + name + "!";
+//            } catch (Exception e) {
+//                return "You failed to upload " + name + " => " + e.getMessage();
+//            }
+//        } else {
+//            return "You failed to upload " + name + " because the file was empty.";
+//        }
+        return null;
     }
 
 }

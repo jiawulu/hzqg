@@ -12,17 +12,21 @@ import java.io.Serializable;
  * 合同资料
  */
 @Entity
+@org.hibernate.annotations.Entity(dynamicUpdate = true)
 public class Htzl implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String kh;
-    private String kfddh;
+    private String khddh;
     private long wxjq;
     private String ddczy;
     private String wxh;
-    private String cgjq;
+    /**
+     * 采购交期
+     */
+    private long cgjq;
     private String kehao;
     private String gchh;
     private long xdrq;
@@ -33,7 +37,7 @@ public class Htzl implements Serializable {
     private String bzsm;
     private double wxj;
     private double cgj;
-    private long sl;
+    private double sl;
     private String jgtk;
     private int htxj;
     private double wxzj;
@@ -41,6 +45,31 @@ public class Htzl implements Serializable {
     private double mll;
     private double bmmll;
     private String jyyq;
+
+    /**
+     * 样品确认时间
+     */
+    private long ypqrsj;
+    /**
+     * 评审单签样时间
+     */
+    private long psdqysj;
+    /**
+     * 测试要求	判断	列表选择  ：是  ： 或者  ：否：
+     */
+    private int csyq;
+    /**
+     * 测试完成时间
+     */
+    private long cswcsj;
+    /**
+     * 中期检查次数
+     */
+    private int zjcs;
+    /**
+     * 出运检查次数
+     */
+    private int cyjccs;
 
     public Integer getId() {
         return id;
@@ -58,12 +87,12 @@ public class Htzl implements Serializable {
         this.kh = kh;
     }
 
-    public String getKfddh() {
-        return kfddh;
+    public String getKhddh() {
+        return khddh;
     }
 
-    public void setKfddh(String kfddh) {
-        this.kfddh = kfddh;
+    public void setKhddh(String khddh) {
+        this.khddh = khddh;
     }
 
     public long getWxjq() {
@@ -90,11 +119,11 @@ public class Htzl implements Serializable {
         this.wxh = wxh;
     }
 
-    public String getCgjq() {
+    public long getCgjq() {
         return cgjq;
     }
 
-    public void setCgjq(String cgjq) {
+    public void setCgjq(long cgjq) {
         this.cgjq = cgjq;
     }
 
@@ -178,11 +207,11 @@ public class Htzl implements Serializable {
         this.cgj = cgj;
     }
 
-    public long getSl() {
+    public double getSl() {
         return sl;
     }
 
-    public void setSl(long sl) {
+    public void setSl(double sl) {
         this.sl = sl;
     }
 
@@ -240,5 +269,53 @@ public class Htzl implements Serializable {
 
     public void setJyyq(String jyyq) {
         this.jyyq = jyyq;
+    }
+
+    public long getYpqrsj() {
+        return ypqrsj;
+    }
+
+    public void setYpqrsj(long ypqrsj) {
+        this.ypqrsj = ypqrsj;
+    }
+
+    public long getPsdqysj() {
+        return psdqysj;
+    }
+
+    public void setPsdqysj(long psdqysj) {
+        this.psdqysj = psdqysj;
+    }
+
+    public int getCsyq() {
+        return csyq;
+    }
+
+    public void setCsyq(int csyq) {
+        this.csyq = csyq;
+    }
+
+    public long getCswcsj() {
+        return cswcsj;
+    }
+
+    public void setCswcsj(long cswcsj) {
+        this.cswcsj = cswcsj;
+    }
+
+    public int getZjcs() {
+        return zjcs;
+    }
+
+    public void setZjcs(int zjcs) {
+        this.zjcs = zjcs;
+    }
+
+    public int getCyjccs() {
+        return cyjccs;
+    }
+
+    public void setCyjccs(int cyjccs) {
+        this.cyjccs = cyjccs;
     }
 }
