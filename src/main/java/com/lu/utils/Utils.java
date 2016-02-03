@@ -67,5 +67,17 @@ public class Utils {
         }
     }
 
+    public static long getLongParam(HttpServletRequest request, String key, long defaultValue) {
+        String value = request.getParameter(key);
+        if (StringUtils.isEmpty(value)) {
+            return defaultValue;
+        }
+        try {
+            return Long.valueOf(value);
+        } catch (Throwable e) {
+            return defaultValue;
+        }
+    }
+
 
 }
