@@ -3,10 +3,7 @@ package com.lu.manager;
 import com.lu.dao.CyjyRepository;
 import com.lu.dao.GdzjRepository;
 import com.lu.dao.HtzlRepository;
-import com.lu.domain.Cyjy;
-import com.lu.domain.Gdzj;
-import com.lu.domain.Htzl;
-import com.lu.domain.User;
+import com.lu.domain.*;
 import com.lu.utils.Constants;
 import com.lu.utils.HtzlPoiHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,56 +109,57 @@ public class HtzlManager {
         return htzlRepository.findAll(specification, pageRequest);
     }
 
-    /**
-     * @param htId
-     * @return
-     */
-    public boolean updateHt(int htId, Htzl dto) {
-        Htzl htzl = htzlRepository.findOne(htId);
 
+    @Transactional
+    public boolean save(HtzlDto dto) {
+        Htzl htzl = htzlRepository.findOne(dto.getId());
         if (null == htzl) {
             return false;
+        }
+
+        List<Gdzj> gdzjList = dto.getZjs();
+        List<Cyjy> cyjyList = dto.getCjs();
+
+        if (null != gdzjList && gdzjList.size() > 0) {
+            int addcount = 0;
+            for (Gdzj gdzj : gdzjList) {
+                if ( null != gdzj.getId() && gdzj.getId() > 0) {
+                    continue;
+                }
+                addcount++;
+                gdzj.setHtId(dto.getId());
+                if (null == gdzjRepository.save(gdzj)) {
+                    throw new RuntimeException("save gdzj failed");
+                }
+            }
+            htzl.setZjcs(htzl.getZjcs() + addcount);
+        }
+
+        if (null != cyjyList && cyjyList.size() > 0) {
+            int addcount = 0;
+            for (Cyjy cyjy : cyjyList) {
+                if ( null != cyjy.getId() && cyjy.getId() > 0) {
+                    continue;
+                }
+                addcount++;
+                cyjy.setHtId(dto.getId());
+                if (null == cyjyRepository.save(cyjy)) {
+                    throw new RuntimeException("save cyjy failed");
+                }
+            }
+            htzl.setCyjccs(htzl.getCyjccs() + addcount);
         }
 
         htzl.setYpqrsj(dto.getYpqrsj());
         htzl.setPsdqysj(dto.getPsdqysj());
         htzl.setCsyq(dto.getCsyq());
         htzl.setCswcsj(dto.getCswcsj());
-        return null != htzlRepository.save(htzl);
-    }
 
-    @Transactional
-    public boolean add(int htId, Gdzj gdzj) {
-
-        Htzl htzl = htzlRepository.findOne(htId);
-
-        if (null == htzl) {
-            return false;
+        if (null == htzlRepository.save(htzl)) {
+            throw new RuntimeException("save htzl failed");
         }
 
-        gdzj.setHtId(htId);
-        Gdzj saved = gdzjRepository.save(gdzj);
-        if (null != saved) {
-            htzl.setZjcs(htzl.getZjcs() + 1);
-            return null != htzlRepository.save(htzl);
-        }
-        return false;
-    }
-
-
-    @Transactional
-    public boolean add(int htId, Cyjy cyjy) {
-        Htzl htzl = htzlRepository.findOne(htId);
-        if (null == htzl) {
-            return false;
-        }
-        cyjy.setHtId(htId);
-        Cyjy saved = cyjyRepository.save(cyjy);
-        if (null != saved) {
-            htzl.setCyjccs(htzl.getCyjccs() + 1);
-            return null != htzlRepository.save(htzl);
-        }
-        return false;
+        return true;
     }
 
 

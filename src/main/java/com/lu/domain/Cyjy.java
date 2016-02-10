@@ -41,7 +41,7 @@ public class Cyjy implements Serializable {
     /**
      * 整改内容	文本
      */
-    private String zgnrwb;
+    private String zgnr;
 
     public Integer getId() {
         return id;
@@ -83,11 +83,11 @@ public class Cyjy implements Serializable {
         this.nrbz = nrbz;
     }
 
-    public String getZgnrwb() {
-        return zgnrwb;
+    public String getZgnr() {
+        return zgnr;
     }
 
-    public void setZgnrwb(String zgnrwb) {
-        this.zgnrwb = zgnrwb;
+    public void setZgnr(String zgnr) {
+        this.zgnr = zgnr;
     }
 }

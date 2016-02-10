@@ -18,10 +18,10 @@ public class Gdzj implements Serializable {
     @Column(nullable = false)
     private Integer htId;
 
-    private long jdkdsj;
-    private String jdkdqk;
-    private long zjhksj;
-    private String hzkdqk;
+    private long jdhdsj;
+    private String jdhdqk;
+    private long zjhdsj;
+    private String zjhdqk;
     private String zgcs;
 
     public Integer getId() {
@@ -40,36 +40,36 @@ public class Gdzj implements Serializable {
         this.htId = htId;
     }
 
-    public long getJdkdsj() {
-        return jdkdsj;
+    public long getJdhdsj() {
+        return jdhdsj;
     }
 
-    public void setJdkdsj(long jdkdsj) {
-        this.jdkdsj = jdkdsj;
+    public void setJdhdsj(long jdhdsj) {
+        this.jdhdsj = jdhdsj;
     }
 
-    public String getJdkdqk() {
-        return jdkdqk;
+    public String getJdhdqk() {
+        return jdhdqk;
     }
 
-    public void setJdkdqk(String jdkdqk) {
-        this.jdkdqk = jdkdqk;
+    public void setJdhdqk(String jdhdqk) {
+        this.jdhdqk = jdhdqk;
     }
 
-    public long getZjhksj() {
-        return zjhksj;
+    public long getZjhdsj() {
+        return zjhdsj;
     }
 
-    public void setZjhksj(long zjhksj) {
-        this.zjhksj = zjhksj;
+    public void setZjhdsj(long zjhdsj) {
+        this.zjhdsj = zjhdsj;
     }
 
-    public String getHzkdqk() {
-        return hzkdqk;
+    public String getZjhdqk() {
+        return zjhdqk;
     }
 
-    public void setHzkdqk(String hzkdqk) {
-        this.hzkdqk = hzkdqk;
+    public void setZjhdqk(String zjhdqk) {
+        this.zjhdqk = zjhdqk;
     }
 
     public String getZgcs() {
