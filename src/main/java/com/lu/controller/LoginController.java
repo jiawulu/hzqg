@@ -39,8 +39,8 @@ public class LoginController {
             return result;
         }
 
-        User user2 = userManager.register(userName, passWord);
-        result.setSuccess(null != user);
+        User user2 = userManager.assign( user, userName, passWord);
+        result.setSuccess(null != user2);
 
         return result;
 

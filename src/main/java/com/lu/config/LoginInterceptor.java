@@ -21,21 +21,16 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler) throws Exception {
 
-
-        if (request.getRequestURI().startsWith("/rest/open/")) {
-            return true;
-        }
-
         String sid = Utils.getSid(request);
         if (!StringUtils.isEmpty(sid)) {
-
             User user = userManager.getUserBySid(sid);
-
             if (null != user) {
                 request.setAttribute("user", user);
-                return true;
             }
+        }
 
+        if (request.getRequestURI().startsWith("/rest/open/") || null != request.getAttribute("user")) {
+            return true;
         }
 
         Result result = new Result();
