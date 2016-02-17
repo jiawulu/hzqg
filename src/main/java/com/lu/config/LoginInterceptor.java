@@ -33,14 +33,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
 
-        Result result = new Result();
-        result.setCode(-1);
-        result.setMsg("need login");
-        response.getWriter().write(JSON.toJSONString(result));
+        response.getWriter().write(JSON.toJSONString(Result.NO_LOGIN));
         return false;
-
-//        response.getWriter().write("FIXME");
-//        return false;
     }
 
 }

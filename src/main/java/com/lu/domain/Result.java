@@ -5,10 +5,31 @@ package com.lu.domain;
  */
 public class Result<T> {
 
+    public static final int ERROR_CODE_NO_LOGIN = -1;
+    public static final int ERROR_CODE_NO_PERMISSION = -2;
+    public static final int ERROR_CODE_ERROR_PARAM = -3;
+    public static final int ERROR_CODE_LOGIN_FAILED = -4;
+    public static final int ERROR_CODE_EXCEPTION = -99;
+
+    public static final Result NO_LOGIN = new Result(false, ERROR_CODE_NO_LOGIN,"no login");
+    public static final Result NO_PERMISSION = new Result(false, ERROR_CODE_NO_PERMISSION,"no permission");
+    public static final Result ERROR_PARAM = new Result(false, ERROR_CODE_ERROR_PARAM,"param error");
+    public static final Result EXCEPTION = new Result(false, ERROR_CODE_EXCEPTION,"exception");
+
+
     private boolean success;
     private int code;
     private String msg;
     private T data;
+
+    public Result() {
+    }
+
+    public Result(boolean success, int code, String msg) {
+        this.success = success;
+        this.code = code;
+        this.msg = msg;
+    }
 
     public boolean isSuccess() {
         return success;

@@ -71,6 +71,11 @@ public class Htzl implements Serializable {
      */
     private int cyjccs;
 
+    /**
+     * 出运完成情况
+     */
+    private boolean cywc;
+
     public Integer getId() {
         return id;
     }
@@ -317,5 +322,13 @@ public class Htzl implements Serializable {
 
     public void setCyjccs(int cyjccs) {
         this.cyjccs = cyjccs;
+    }
+
+    public boolean isCywc() {
+        return cywc;
+    }
+
+    public void setCywc(boolean cywc) {
+        this.cywc = cywc;
     }
 }

@@ -55,9 +55,9 @@ public class UserManager {
         return userRepository.getUserBySid(sid);
     }
 
-    public User assign(User currentUser, String userName, String passWord) {
+    public User assign(User currentUser, String userName, String passWord, int role) {
 
-        if (null == currentUser || currentUser.getRole() != Constants.ROLE_ADMIN) {
+        if (null == currentUser || currentUser.getRole() > Constants.ROLE_ADMIN || role <= Constants.ROLE_ADMIN || role > Constants.ROLE_GCLLY) {
             throw new RuntimeException("you have no admin permission");
         }
 
@@ -65,7 +65,7 @@ public class UserManager {
         user.setUserName(userName);
         user.setPassWord(Utils.md5(passWord));
         user.setLastLoginTime(System.currentTimeMillis());
-        user.setRole(Constants.ROLE_USER);
+        user.setRole(role);
         try {
             return userRepository.save(user);
         } catch (Throwable e) {

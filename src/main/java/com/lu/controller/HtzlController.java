@@ -1,8 +1,10 @@
 package com.lu.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.lu.dao.HtzlRepository;
 import com.lu.domain.*;
 import com.lu.manager.HtzlManager;
+import com.lu.utils.Constants;
 import com.lu.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,8 @@ public class HtzlController {
 
     @Autowired
     private HtzlManager htzlManager;
+    @Autowired
+    private HtzlRepository htzlRepository;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String list(HttpServletRequest httpServletRequest) {
@@ -61,7 +65,14 @@ public class HtzlController {
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public
     @ResponseBody
-    String handleFileUpload(@RequestParam("file") MultipartFile file) {
+    String handleFileUpload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+
+        User user = Utils.getUser(request);
+
+        if (null == user || !(Constants.ROLE_ADMIN == user.getRole() || Constants.ROLE_GCLLY == user.getRole())) {
+            return "没有权限";
+        }
+
         if (!file.isEmpty()) {
             try {
 
@@ -99,6 +110,20 @@ public class HtzlController {
         }
 
         return JSON.toJSONString(result);
+    }
+
+    @RequestMapping(value = "/uploadCyqk", method = RequestMethod.POST)
+    public Result updateCyqk(@RequestParam("htId") int htid, @RequestParam("cyqk") boolean cyqk, HttpServletRequest request) {
+
+        User user = Utils.getUser(request);
+
+        if (null == user || !(Constants.ROLE_ADMIN == user.getRole() || Constants.ROLE_GCLLY == user.getRole())) {
+            return Result.NO_PERMISSION;
+        }
+
+        Result result = new Result();
+        result.setSuccess(htzlManager.updateByCyqk(htid,cyqk));
+        return result;
     }
 
 }

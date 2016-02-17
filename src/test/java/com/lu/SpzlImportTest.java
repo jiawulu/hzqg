@@ -1,8 +1,7 @@
 package com.lu;
 
-import com.lu.domain.User;
 import com.lu.manager.HtzlManager;
-import com.lu.manager.UserManager;
+import com.lu.utils.SpzlPoiHelper;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,18 +16,14 @@ import java.io.FileInputStream;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = SpringbootApplication.class)
 @WebAppConfiguration
-public class UserTest {
-
-    @Autowired
-    private UserManager userManager;
+public class SpzlImportTest {
 
     @Test
-    public void testCreateUser() throws Throwable {
+    public void testImportXls() throws Throwable {
 
-        User user = userManager.register("admin","admin");
+        FileInputStream file = new FileInputStream(new File("/Users/wuzhong/AliDrive/6.work/hzqg/test2.xlsx"));
 
-
-        userManager.assign(user, "test","test",1);
+        new SpzlPoiHelper().convert(file);
 
 
     }

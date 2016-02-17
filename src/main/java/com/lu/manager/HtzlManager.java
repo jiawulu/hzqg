@@ -4,7 +4,6 @@ import com.lu.dao.CyjyRepository;
 import com.lu.dao.GdzjRepository;
 import com.lu.dao.HtzlRepository;
 import com.lu.domain.*;
-import com.lu.utils.Constants;
 import com.lu.utils.HtzlPoiHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -70,9 +69,10 @@ public class HtzlManager {
             public Predicate toPredicate(Root<Htzl> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 
                 List<Predicate> list = new ArrayList<Predicate>();
-                if (Constants.ROLE_USER == user.getRole()) {
-                    list.add(cb.equal(root.get("ddczy"), user.getUserName()));
-                }
+                //TODO
+//                if (Constants.ROLE_USER == user.getRole()) {
+//                    list.add(cb.equal(root.get("ddczy"), user.getUserName()));
+//                }
 
                 if (cgjqWarnType > 0) {
                     Long endtime = System.currentTimeMillis() + cgjqWarnType * 24 * 3600 * 1000;
@@ -123,7 +123,7 @@ public class HtzlManager {
         if (null != gdzjList && gdzjList.size() > 0) {
             int addcount = 0;
             for (Gdzj gdzj : gdzjList) {
-                if ( null != gdzj.getId() && gdzj.getId() > 0) {
+                if (null != gdzj.getId() && gdzj.getId() > 0) {
                     continue;
                 }
                 addcount++;
@@ -138,7 +138,7 @@ public class HtzlManager {
         if (null != cyjyList && cyjyList.size() > 0) {
             int addcount = 0;
             for (Cyjy cyjy : cyjyList) {
-                if ( null != cyjy.getId() && cyjy.getId() > 0) {
+                if (null != cyjy.getId() && cyjy.getId() > 0) {
                     continue;
                 }
                 addcount++;
@@ -154,6 +154,23 @@ public class HtzlManager {
         htzl.setPsdqysj(dto.getPsdqysj());
         htzl.setCsyq(dto.getCsyq());
         htzl.setCswcsj(dto.getCswcsj());
+
+        if (null == htzlRepository.save(htzl)) {
+            throw new RuntimeException("save htzl failed");
+        }
+
+        return true;
+    }
+
+
+    @Transactional
+    public boolean updateByCyqk(int htId, boolean cyqk) {
+        Htzl htzl = htzlRepository.findOne(htId);
+        if (null == htzl) {
+            return false;
+        }
+
+        htzl.setCywc(cyqk);
 
         if (null == htzlRepository.save(htzl)) {
             throw new RuntimeException("save htzl failed");
