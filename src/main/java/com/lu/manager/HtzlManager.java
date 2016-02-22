@@ -3,7 +3,13 @@ package com.lu.manager;
 import com.lu.dao.CyjyRepository;
 import com.lu.dao.GdzjRepository;
 import com.lu.dao.HtzlRepository;
-import com.lu.domain.*;
+import com.lu.domain.Cyjy;
+import com.lu.domain.Gdzj;
+import com.lu.domain.Htzl;
+import com.lu.domain.User;
+import com.lu.dto.HtzlDto;
+import com.lu.dto.HtzlQueryDto;
+import com.lu.utils.Constants;
 import com.lu.utils.HtzlPoiHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -54,50 +60,60 @@ public class HtzlManager {
     }
 
     /**
+     * cgjqWarnType 1,2,3,4 (天数)
+     *
      * @param pageRequest
      * @param user
-     * @param cgjqWarnType 1,2,3,4 (天数)
-     * @param startJq
-     * @param endJq
-     * @param zjcs
-     * @param cycs
+     * @param htzlQueryDto
      * @return
      */
-    public Page<Htzl> search(Pageable pageRequest, final User user, final int cgjqWarnType, final long startJq, final long endJq, final int zjcs, final int cycs) {
+    public Page<Htzl> search(Pageable pageRequest, final User user, final HtzlQueryDto htzlQueryDto) {
         Specification<Htzl> specification = new Specification<Htzl>() {
             @Override
             public Predicate toPredicate(Root<Htzl> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 
                 List<Predicate> list = new ArrayList<Predicate>();
                 //TODO
-//                if (Constants.ROLE_USER == user.getRole()) {
-//                    list.add(cb.equal(root.get("ddczy"), user.getUserName()));
-//                }
+                if (Constants.ROLE_YWY == user.getRole()) {
+                    list.add(cb.equal(root.get("ddczy"), user.getUserName()));
+                }
 
-                if (cgjqWarnType > 0) {
-                    Long endtime = System.currentTimeMillis() + cgjqWarnType * 24 * 3600 * 1000;
+                if (htzlQueryDto.getCgjqWarnType() > 0) {
+
+                    Long endtime = System.currentTimeMillis() + htzlQueryDto.getCgjqWarnType() * 24 * 3600 * 1000;
                     Expression<Long> cgjq = root.get("cgjq");
                     list.add(cb.le(cgjq, endtime));
+
                 } else {
 
-                    if (startJq > 0) {
+                    if (htzlQueryDto.getStartJq() > 0) {
                         Expression<Long> cgjq = root.get("cgjq");
-                        list.add(cb.ge(cgjq, startJq));
+                        list.add(cb.ge(cgjq, htzlQueryDto.getStartJq()));
                     }
 
-                    if (endJq > 0) {
+                    if (htzlQueryDto.getEndJq() > 0) {
                         Expression<Long> cgjq = root.get("cgjq");
-                        list.add(cb.le(cgjq, endJq));
+                        list.add(cb.le(cgjq, htzlQueryDto.getEndJq()));
                     }
 
-                    if (zjcs > 0) {
+                    if (null != htzlQueryDto.getZjcs() && htzlQueryDto.getZjcs() > 0) {
                         Expression<Integer> cgjq = root.get("zjcs");
-                        list.add(cb.ge(cgjq, zjcs));
+                        list.add(cb.ge(cgjq, htzlQueryDto.getZjcs()));
                     }
 
-                    if (cycs > 0) {
-                        Expression<Long> cgjq = root.get("cyjccs");
-                        list.add(cb.ge(cgjq, cycs));
+                    if (null != htzlQueryDto.getCywc()) {
+                        Expression<Boolean> cgjq = root.get("cywc");
+                        list.add(cb.equal(cgjq, htzlQueryDto.getCywc()));
+                    }
+
+                    if (null != htzlQueryDto.getHuhao()) {
+                        Expression<String> cgjq = root.get("gchh");
+                        list.add(cb.equal(cgjq, htzlQueryDto.getHuhao()));
+                    }
+
+                    if (null != htzlQueryDto.getCght()) {
+                        Expression<String> cgjq = root.get("cght");
+                        list.add(cb.equal(cgjq, htzlQueryDto.getCght()));
                     }
                 }
                 //TODO here~

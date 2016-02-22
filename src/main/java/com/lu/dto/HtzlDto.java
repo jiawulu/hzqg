@@ -1,4 +1,7 @@
-package com.lu.domain;
+package com.lu.dto;
+
+import com.lu.domain.Cyjy;
+import com.lu.domain.Gdzj;
 
 import java.io.Serializable;
 import java.util.List;

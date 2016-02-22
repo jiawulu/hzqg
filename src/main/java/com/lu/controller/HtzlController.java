@@ -1,8 +1,12 @@
 package com.lu.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.lu.dao.HtzlRepository;
-import com.lu.domain.*;
+import com.lu.domain.Htzl;
+import com.lu.domain.PageValue;
+import com.lu.domain.Result;
+import com.lu.domain.User;
+import com.lu.dto.HtzlDto;
+import com.lu.dto.HtzlQueryDto;
 import com.lu.manager.HtzlManager;
 import com.lu.utils.Constants;
 import com.lu.utils.Utils;
@@ -26,25 +30,17 @@ public class HtzlController {
 
     @Autowired
     private HtzlManager htzlManager;
-    @Autowired
-    private HtzlRepository htzlRepository;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String list(HttpServletRequest httpServletRequest) {
+    public String list(HttpServletRequest httpServletRequest, @RequestParam("json") String json) {
 
         final User user = Utils.getUser(httpServletRequest);
 
-        int pageNo = Utils.getIntParam(httpServletRequest, "pageNo", 0);
-        int pageSize = Utils.getIntParam(httpServletRequest, "pageSize", 20);
-        int cgjqWarnType = Utils.getIntParam(httpServletRequest, "cgjqWarnType", 0);
-        long startJq = Utils.getLongParam(httpServletRequest, "startJq", 0L);
-        long endJq = Utils.getLongParam(httpServletRequest, "endJq", 0L);
-        int zjcs = Utils.getIntParam(httpServletRequest, "zjcs", 0);
-        int cycs = Utils.getIntParam(httpServletRequest, "cycs", 0);
+        HtzlQueryDto queryDto = JSON.parseObject(json, HtzlQueryDto.class);
 
-        PageRequest pageRequest = new PageRequest(pageNo, pageSize);
+        PageRequest pageRequest = new PageRequest(queryDto.getPageNo(), (0 == queryDto.getPageSize()) ? 20 : queryDto.getPageSize());
 
-        Page<Htzl> page = htzlManager.search(pageRequest, user, cgjqWarnType, startJq, endJq, zjcs, cycs);
+        Page<Htzl> page = htzlManager.search(pageRequest, user, queryDto);
 
         Result<PageValue<Htzl>> result = new Result<>();
 
@@ -122,7 +118,7 @@ public class HtzlController {
         }
 
         Result result = new Result();
-        result.setSuccess(htzlManager.updateByCyqk(htid,cyqk));
+        result.setSuccess(htzlManager.updateByCyqk(htid, cyqk));
         return result;
     }
 

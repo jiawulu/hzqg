@@ -3,6 +3,7 @@ package com.lu;
 import com.lu.dao.HtzlRepository;
 import com.lu.domain.Htzl;
 import com.lu.domain.User;
+import com.lu.dto.HtzlQueryDto;
 import com.lu.manager.HtzlManager;
 import com.lu.manager.UserManager;
 import org.junit.Assert;
@@ -36,7 +37,7 @@ public class HtzlSearchTest {
 
         User admin = userManager.login("admin","admin");
 
-        Page<Htzl> result = htzlManager.search(new PageRequest(0,5),admin,10,0,0,0,0);
+        Page<Htzl> result = htzlManager.search(new PageRequest(0,5),admin,new HtzlQueryDto());
 
         System.out.println(result.getTotalElements());
 
